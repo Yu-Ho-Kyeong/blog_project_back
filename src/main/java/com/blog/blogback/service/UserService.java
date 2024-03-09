@@ -1,7 +1,7 @@
 package com.blog.blogback.service;
 
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -47,6 +47,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@PropertySource(value = {"classpath:jdbc.properties"})
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

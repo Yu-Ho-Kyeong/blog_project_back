@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@PropertySource("classpath:jdbc.properties")
 public class JwtTokenProvider {
     private final Key key;
 

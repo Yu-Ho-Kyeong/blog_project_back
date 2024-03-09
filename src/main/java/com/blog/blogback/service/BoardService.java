@@ -1,6 +1,7 @@
 package com.blog.blogback.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,7 @@ import java.nio.file.Paths;
 
 import java.time.format.DateTimeFormatter;
 
-
+@PropertySource(value = {"classpath:jdbc.properties"})
 @Slf4j
 @RequiredArgsConstructor    //final or NonNull 옵션 필드를 전부 포함한 생성자 만들어줌
 @Service
