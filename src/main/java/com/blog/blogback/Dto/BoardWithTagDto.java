@@ -3,7 +3,7 @@ package com.blog.blogback.Dto;
 import java.util.List;
 import com.blog.blogback.Entity.Board;
 import com.blog.blogback.Entity.BoardImg;
-import com.blog.blogback.Entity.Comment;
+
 import com.blog.blogback.Entity.Tag;
 
 import lombok.AllArgsConstructor;

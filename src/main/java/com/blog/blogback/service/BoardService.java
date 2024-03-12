@@ -5,9 +5,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +14,17 @@ import com.blog.blogback.Dto.BoardRequestDto;
 import com.blog.blogback.Dto.BoardWithTagDto;
 import com.blog.blogback.Dto.Board.BoardImgRequestDto;
 import com.blog.blogback.Dto.Board.BoardImgSaveDto;
-import com.blog.blogback.Dto.Comment.CommentResponseDto;
+
 import com.blog.blogback.Entity.Board;
 import com.blog.blogback.Entity.BoardImg;
-import com.blog.blogback.Entity.Comment;
 import com.blog.blogback.Entity.Tag;
 import com.blog.blogback.Entity.User;
+
 import com.blog.blogback.Repository.BoardImgRepository;
 import com.blog.blogback.Repository.BoardRepository;
 import com.blog.blogback.Repository.TagRepository;
 import com.blog.blogback.Repository.UserRepository;
+
 import com.blog.blogback.common.Exception.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -36,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import java.time.format.DateTimeFormatter;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,8 +43,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import java.time.format.DateTimeFormatter;
 
 @PropertySource(value = {"classpath:jdbc.properties"})
 @Slf4j
@@ -158,10 +156,11 @@ public Page<BoardWithTagDto> getBoardsWithTag(String tagName, Pageable pageable)
                 throw new NotFoundException("디렉토리 생성 실패");
             }
         }
-        List<String> fakePaths = new ArrayList<>();
+        //List<String> fakePaths = new ArrayList<>();
+        List<String> filePaths = new ArrayList<>();
         // 파일명 중복 방지를 위한 날짜시간 생성
         for(MultipartFile file : boardImgRequestDto.getFiles()){
-            log.info("boardImgRequestDto.getFiles : " + file);
+            //log.info("boardImgRequestDto.getFiles : " + file);
             LocalDateTime now = LocalDateTime.now();
             String fmtNow = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             
@@ -171,16 +170,16 @@ public Page<BoardWithTagDto> getBoardsWithTag(String tagName, Pageable pageable)
             try{
                 Files.copy(file.getInputStream(), filePath);
               
-                String[] pathPart = filePath.toString().split("public");
-                String fakePath = pathPart[1];
-                fakePaths.add(fakePath);
+                //String[] pathPart = filePath.toString().split("public");
+                //String fakePath = pathPart[1];
+                filePaths.add(filePath.toString());
                 
             }catch(IOException e){
                 throw new NotFoundException("파일 업로드 실패");
             }
         }
 	
-        return fakePaths;
+        return filePaths;
     }
 
     // 게시글 content 및 이미지 저장 
@@ -205,6 +204,11 @@ public Page<BoardWithTagDto> getBoardsWithTag(String tagName, Pageable pageable)
         params.put("board", board);
         return params;
     }
+    // 도커 container에서 업로드된 게시글 이미지 불러오기
+    public byte[] getImage(String imageName) throws IOException {
+        Path imagePath = Paths.get(uploadDir, imageName);
+        return Files.readAllBytes(imagePath);
+    }
     // 게시글 삭제
     @Transactional
     public void delete(Long boardNo) {
@@ -218,11 +222,6 @@ public Page<BoardWithTagDto> getBoardsWithTag(String tagName, Pageable pageable)
         List<Object[]> tagInfo = tagRepository.boardCountByTagName();
         return tagInfo;
     }
-    // 태그및 게시글 조회
-    // public List<Board> findBoardWithTags(String tagName) {
-    //     Sort sort = Sort.by(Sort.Direction.DESC, "regDate");
-    //     return boardRepository.findBoardWithTags(tagName, sort);
-    // }
     // 태그 count
     public int allTagCnt(){
         int cnt = tagRepository.allTagCnt();

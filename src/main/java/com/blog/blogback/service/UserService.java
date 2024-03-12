@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +13,16 @@ import com.blog.blogback.Dto.JwtToken;
 import com.blog.blogback.Dto.UserDto;
 import com.blog.blogback.Dto.UserIntroDto;
 import com.blog.blogback.Dto.UserJoinDto;
+
 import com.blog.blogback.Entity.Board;
 import com.blog.blogback.Entity.User;
+
 import com.blog.blogback.Repository.BoardImgRepository;
 import com.blog.blogback.Repository.BoardRepository;
 import com.blog.blogback.Repository.CommentRepository;
 import com.blog.blogback.Repository.TagRepository;
 import com.blog.blogback.Repository.UserRepository;
+
 import com.blog.blogback.common.JwtTokenProvider;
 import com.blog.blogback.common.Exception.NotFoundException;
 import com.blog.blogback.common.Exception.ErrorType;
@@ -40,6 +42,7 @@ import java.util.List;
 import java.util.Optional;
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +81,6 @@ public class UserService {
         String role = "ROLE_USER";
         return UserDto.toDto(userRepository.save(userJoinDto.toEntity(encodedPassword, role)));
     }
-
     // 로그인
     @Transactional
     public JwtToken login(String username, String password){
@@ -98,7 +100,6 @@ public class UserService {
         System.out.println("jwtToken : " + jwtToken);
         return jwtToken;
     }
-
     // 소개글 정보 조회
     @Transactional
     public String getIntro(Long userNo){
@@ -106,7 +107,6 @@ public class UserService {
             .orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다. id=" + userNo));
         return user.getIntroduction();
     }
-
     // 소개글 수정
     @Transactional
     public User updateIntro(UserIntroDto userIntroDto) {
@@ -116,7 +116,6 @@ public class UserService {
             user.update(userIntroDto.getIntroduction());
         return user;
     }
-
     // 유저 정보 조회
     @Transactional
     public AdminResponseDto getUserSetInfo(Long userNo, AdminResponseDto adminResponseDto){
@@ -125,7 +124,6 @@ public class UserService {
         adminResponseDto = new AdminResponseDto(user);
         return adminResponseDto;
     }
-
     // 유저설정 변경
     @Transactional
     public User adminUpdateInfo(AdminRequestDto adminRequestDto){
@@ -134,7 +132,6 @@ public class UserService {
         user.updateInfo(adminRequestDto.getName(), adminRequestDto.getIntroduction());
         return user;
     }
-
     // 유저설정 변경
     @Transactional
     public User adminUpdateBlogName(AdminRequestDto adminRequestDto){
@@ -143,7 +140,6 @@ public class UserService {
         user.updateBlogName(adminRequestDto.getBlogName());
         return user;
     }
-
     // 유저 프로필 이미지 업로드
     @Transactional
     public String uploadImg(AdminImgRequestDto adminImgRequestDto){
@@ -166,14 +162,14 @@ public class UserService {
         
         String fileName = fmtNow + "_" + adminImgRequestDto.getFile().getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
-
+        log.info("filePath : {}", filePath);
         try{
             Files.copy(adminImgRequestDto.getFile().getInputStream(), filePath);
             
-            String[] pathPart = filePath.toString().split("public");
-            String fakePath = pathPart[1];
+            //String[] pathPart = filePath.toString().split("public");
+            //String fakePath = pathPart[1];
 
-            user.updateImgPath(fakePath);
+            user.updateImgPath(filePath.toString());
             userRepository.save(user);
         }catch(IOException e){
             throw new NotFoundException("파일 업로드 실패");
@@ -181,7 +177,11 @@ public class UserService {
 
         return user.getImgPath();
     }
-
+    // 도커 container에서 업로드된 유저 프로필 이미지 불러오기
+    public byte[] getImage(String imageName) throws IOException {
+        Path imagePath = Paths.get(uploadDir, imageName);
+        return Files.readAllBytes(imagePath);
+    }
     //회원탈퇴
     @Transactional
     public void deleteUser(AdminDeleteRequestDto userLoginDto){

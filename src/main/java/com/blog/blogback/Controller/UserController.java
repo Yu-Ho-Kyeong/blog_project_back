@@ -25,7 +25,7 @@ import com.blog.blogback.Dto.Admin.AdminResponseDto;
 import com.blog.blogback.Entity.User;
 import com.blog.blogback.Repository.UserRepository;
 import com.blog.blogback.common.JwtTokenProvider;
-
+import com.blog.blogback.common.Exception.NotFoundException;
 import com.blog.blogback.security.CustomUserDetails;
 import com.blog.blogback.security.CustomUserDetailsService;
 import com.blog.blogback.security.CustomUserDtailsRepository;
@@ -37,8 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.core.io.Resource;
 
 import java.util.List;
 import java.util.Map;

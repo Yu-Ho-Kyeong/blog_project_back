@@ -47,3 +47,13 @@ jar {
     enabled = false
 }
 
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+}
+
+bootJar{
+    archivesBaseName = 'App'
+    archiveFileName = 'app.jar'
+    archiveVersion = "0.0.1"
+}

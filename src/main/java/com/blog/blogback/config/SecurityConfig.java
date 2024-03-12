@@ -30,26 +30,26 @@ public class SecurityConfig {
     private static final String[] All_PERMIT_URL_ARR = {
 		"/",
 		"/error",
-		"/api/all/**",
-		"/api/board/all/**",
-		"/api/comment/all/**",
-		"/api/tag/all/**"
+		"/api/all/**",			// 등록된 유저정보 불러오기
+		"/api/board/all/**",	// 등록된 게시글 불러오기
+		"/api/comment/all/**",	// 등록된 댓글 불러오기
+		"/api/tag/all/**",		// 등록된 태그 불러오기
+		"/app/uploads/**"		// 서버 업로드 이미지 불러오기;
 	};
 
 	// USER 허용 url
     private static final String[] USER_PERMIT_URL_ARR = {
-		"/api/comment/user/**",
+		"/api/comment/user/**",		 // 회원 댓글작성
 		"/api/admin/uploadImg",		 // 회원프로필수정(설정페이지)
 		"/api/admin/adminUpdateInfo" // 회원정보수정(설정페이지)
 	};
 
 	// ADMIN 허용 url
     private static final String[] ADMIN_PERMIT_URL_ARR = {
-		"/api/comment/user/**",
-		"/api/board/admin/**",	 	
-		"/api/comment/admin/**",		
-		"/api/board/admin/**",			
-		"/api/admin/**"
+		"/api/comment/user/**",		// 회원 댓글작성
+		"/api/board/admin/**",	 	// 관리자 게시글 작성
+		"/api/comment/admin/**",	// 
+		"/api/admin/**"				// 회원 정보수정, 이미지 업로드
 	};
 
 	@Bean
