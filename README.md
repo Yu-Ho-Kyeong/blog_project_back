@@ -12,8 +12,8 @@
 - 이미지 업로드: 회원정보에서 프로필사진을 업로드할 수 있습니다.
 
 ## URL
-- /api/getUsers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모든 유저정보 조회
-- /api/login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;유저 로그인
+- /api/getUsers &nbsp;&nbsp;&nbsp;모든 유저정보 조회
+- /api/login &nbsp;&nbsp;&nbsp;유저 로그인
 - /api/signup&nbsp;&nbsp;&nbsp;유저 회원가입
 - /api/refreshAccessToken&nbsp;&nbsp;&nbsp; accesstoken 만료시 refreshAccessToken발급
 - /api/getIntro/{userNo} &nbsp;&nbsp;&nbsp;회원 소개글 조회
