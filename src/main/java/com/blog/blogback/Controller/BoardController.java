@@ -21,19 +21,13 @@ import com.blog.blogback.Dto.BoardWithTagDto;
 import com.blog.blogback.Dto.Board.BoardImgRequestDto;
 import com.blog.blogback.Dto.Board.BoardImgSaveDto;
 import com.blog.blogback.Entity.Board;
-import com.blog.blogback.Entity.BoardImg;
-import com.blog.blogback.Entity.Tag;
-import com.blog.blogback.Repository.BoardRepository;
 import com.blog.blogback.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.springframework.web.bind.annotation.PutMapping;
