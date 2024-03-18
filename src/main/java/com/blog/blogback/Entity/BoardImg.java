@@ -33,10 +33,8 @@ public class BoardImg {
     @JoinColumn(name = "board_no", nullable = false)
     private Board board;
     
-    @Column
     private String imgPath;
 
-    @Column
     private LocalDateTime regDate;
 
     @Builder

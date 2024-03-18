@@ -21,10 +21,10 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
     //게시글 조회
     Optional<Board> findByBoardNo(Long boardNo);   
     //이전 게시글 정보 조회
-    @Query("SELECT MAX(b.boardNo) AS preBoardNo, b.boardTitle AS boardTitle FROM Board b WHERE b.boardNo < :boardNo GROUP BY b.boardNo")
+    @Query("SELECT (SELECT MAX(b1.boardNo) FROM Board b1 WHERE b1.boardNo < :boardNo) AS preBoardNo, (SELECT b2.boardTitle FROM Board b2 WHERE b2.boardNo = (SELECT MAX(b1.boardNo) FROM Board b1 WHERE b1.boardNo < :boardNo)) AS boardTitle")
     Map<String, Object> findPreByBoardNo(Long boardNo);   
     //다음 게시글 정보 조회
-    @Query("SELECT MIN(b.boardNo) AS nextBoardNo, b.boardTitle AS boardTitle FROM Board b WHERE b.boardNo > :boardNo GROUP BY b.boardNo")
+    @Query("SELECT (SELECT MIN(b1.boardNo) FROM Board b1 WHERE b1.boardNo > :boardNo) AS nextBoardNo, (SELECT b2.boardTitle FROM Board b2 WHERE b2.boardNo = (SELECT MIN(b1.boardNo) FROM Board b1 WHERE b1.boardNo > :boardNo)) AS boardTitle")
     Map<String, Object> findNextByBoardNo(Long boardNo);   
     //게시글번호 max값 찾기
     @Query("SELECT MAX(b.boardNo) FROM Board b")        

@@ -54,17 +54,15 @@ public class Board {
     @Column(nullable = false)
     private String boardTitle;
 
-    @Column
-    private String boardContent;
     
     @JsonIgnore
     @OneToMany(mappedBy = "board", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BoardImg> imgPathList = new ArrayList<>();   
+    
+    private String boardContent;
 
-    @Column
     private LocalDateTime regDate;
 
-    @Column
     private LocalDateTime updDate;
 
     @Builder
@@ -81,7 +79,7 @@ public class Board {
 
         if(tags != null){
           for(Tag tag : tags){
-            tag.setBoard(this);
+            tag.updateBoard(this);
           }
           this.tags = tags;
         }
@@ -93,7 +91,7 @@ public class Board {
           tags = new ArrayList<>();
       }
       tags.add(tag);
-      tag.setBoard(this);
+      tag.updateBoard(this);
   }
 
   public void update(String title, String content){

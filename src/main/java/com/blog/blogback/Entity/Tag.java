@@ -29,12 +29,11 @@ public class Tag {
     @Column(name = "tag_name", length = 100)
     private String tagName;
 
-    @Column
-    private LocalDateTime regDate;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_no")
     private Board board;
+    
+    private LocalDateTime regDate;
 
     @Builder
     public Tag(Long tagNo, String tagName, LocalDateTime regDate, Board board) {
@@ -49,12 +48,12 @@ public class Tag {
     }
 
     // 게시글 설정 메서드
-    public void setBoard(Board board) {
+    public void updateBoard(Board board) {
         this.board = board;
     }
 
-    // 게시글 설정 메서드
-    public void setTagName(String tagName) {
+    // 태그명 변경
+    public void updateTagName(String tagName) {
         this.tagName = tagName;
     }
 

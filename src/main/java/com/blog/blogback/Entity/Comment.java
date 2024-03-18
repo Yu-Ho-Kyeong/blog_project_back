@@ -69,13 +69,10 @@ public class Comment {
     private int isSecret;
                
     @ColumnDefault("FALSE")
-    @Column
     private Boolean isDeleted;            
     
-    @Column
     private LocalDateTime regDate;        
 
-    @Column
     private LocalDateTime updDate;        
 
     @Builder

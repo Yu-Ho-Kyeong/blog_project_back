@@ -25,21 +25,13 @@ public class User {
     private String userId;
     @Column(name="userPw", nullable = false)
     private String userPw; 
-    @Column
     private String name;
-    @Column
     private String introduction;
-    @Column
     private String blogName;
-    @Column
     private LocalDateTime regDate;
-    @Column
     private LocalDateTime updDate;
-    @Column
     private String imgPath;
-    @Column(nullable = false)
     private char enabled;
-    @Column(name = "role")
     private String role;
 
     @Builder
@@ -77,9 +69,5 @@ public class User {
 
     public void updateImgPath(String imgPath){
         this.imgPath = imgPath;
-    }
-
-    public void updateRole(String role){
-        this.role = role;
     }
 }
